@@ -1,7 +1,7 @@
-# coding: utf-8
-# author: 胡光辉
-# date  : 2023/11/1
-# file  : td_script
+# coding : utf-8
+# date   : 2023/10/15
+# author : 胡光辉
+# file   : td_script.py
 
 """
 TDengine脚本, 用于在TDengine中创建数据库和数据表。
@@ -16,13 +16,13 @@ CREATE DATABASE IF NOT EXISTS {} KEEP 36500
 CREATE_BAR_TABLE_SCRIPT = """
 CREATE STABLE IF NOT EXISTS s_bar (
     datetime TIMESTAMP,
-    volume DOUBLE,
+    volume FLOAT,
     turnover DOUBLE,
-    open_interest DOUBLE,
-    open_price DOUBLE,
-    high_price DOUBLE,
-    low_price DOUBLE,
-    close_price DOUBLE
+    open_interest FLOAT,
+    open_price FLOAT,
+    high_price FLOAT,
+    low_price FLOAT,
+    close_price FLOAT
 )
 TAGS(
     symbol BINARY(20),
@@ -39,37 +39,37 @@ CREATE_TICK_TABLE_SCRIPT = """
 CREATE STABLE IF NOT EXISTS s_tick (
     datetime TIMESTAMP,
     name NCHAR(20),
-    volume DOUBLE,
+    volume FLOAT,
     turnover DOUBLE,
-    open_interest DOUBLE,
-    last_price DOUBLE,
-    last_volume DOUBLE,
-    limit_up DOUBLE,
-    limit_down DOUBLE,
-    open_price DOUBLE,
-    high_price DOUBLE,
-    low_price DOUBLE,
-    pre_close DOUBLE,
-    bid_price_1 DOUBLE,
-    bid_price_2 DOUBLE,
-    bid_price_3 DOUBLE,
-    bid_price_4 DOUBLE,
-    bid_price_5 DOUBLE,
-    ask_price_1 DOUBLE,
-    ask_price_2 DOUBLE,
-    ask_price_3 DOUBLE,
-    ask_price_4 DOUBLE,
-    ask_price_5 DOUBLE,
-    bid_volume_1 DOUBLE,
-    bid_volume_2 DOUBLE,
-    bid_volume_3 DOUBLE,
-    bid_volume_4 DOUBLE,
-    bid_volume_5 DOUBLE,
-    ask_volume_1 DOUBLE,
-    ask_volume_2 DOUBLE,
-    ask_volume_3 DOUBLE,
-    ask_volume_4 DOUBLE,
-    ask_volume_5 DOUBLE,
+    open_interest FLOAT,
+    last_price FLOAT,
+    last_volume FLOAT,
+    limit_up FLOAT,
+    limit_down FLOAT,
+    open_price FLOAT,
+    high_price FLOAT,
+    low_price FLOAT,
+    pre_close FLOAT,
+    bid_price_1 FLOAT,
+    bid_price_2 FLOAT,
+    bid_price_3 FLOAT,
+    bid_price_4 FLOAT,
+    bid_price_5 FLOAT,
+    ask_price_1 FLOAT,
+    ask_price_2 FLOAT,
+    ask_price_3 FLOAT,
+    ask_price_4 FLOAT,
+    ask_price_5 FLOAT,
+    bid_volume_1 FLOAT,
+    bid_volume_2 FLOAT,
+    bid_volume_3 FLOAT,
+    bid_volume_4 FLOAT,
+    bid_volume_5 FLOAT,
+    ask_volume_1 FLOAT,
+    ask_volume_2 FLOAT,
+    ask_volume_3 FLOAT,
+    ask_volume_4 FLOAT,
+    ask_volume_5 FLOAT,
     localtime TIMESTAMP
 )
 TAGS(
@@ -77,6 +77,6 @@ TAGS(
     exchange BINARY(10),
     start_time TIMESTAMP,
     end_time TIMESTAMP,
-    count_ DOUBLE
+    count_ INT UNSIGNED
 )
 """
