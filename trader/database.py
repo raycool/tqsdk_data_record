@@ -158,7 +158,7 @@ def get_database() -> BaseDatabase:
 
     # Read database related global setting
     database_name: str = SETTINGS["database.name"]
-    module_name: str = f"tianqin.database.{database_name}"
+    module_name: str = f"database.{database_name}"
 
     # Try to import database module
     try:
