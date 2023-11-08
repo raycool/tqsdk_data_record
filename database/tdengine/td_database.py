@@ -103,11 +103,13 @@ class TDengineDatabase(BaseDatabase):
         for symbol in symbol_dict.keys():
             if len(symbol_dict[symbol]) > 0:
                 self.save_bar_data_from_dict(symbol_dict[symbol], stream=True)
+                symbol_dict[symbol] = []
 
     def save_tick_data_symbol_batch(self, symbol_dict: dict):
         for symbol in symbol_dict.keys():
             if len(symbol_dict[symbol]) > 0:
                 self.save_tick_data_from_dict(symbol_dict[symbol], stream=True)
+                symbol_dict[symbol] = []
 
     def save_bar_data_from_dict(self, bars: List[BarData], stream: bool = False) -> bool:
         """保存k线数据"""
