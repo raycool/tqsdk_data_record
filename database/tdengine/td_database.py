@@ -13,6 +13,8 @@ from typing import Callable, List
 import pandas
 import taos
 from pandas import DataFrame
+from sqlalchemy import create_engine, text
+
 
 from trader.constant import Exchange, Interval
 from trader.database import (
@@ -262,9 +264,11 @@ class TDengineDatabase(BaseDatabase):
         # 生成数据表名
         table_name: str = "_".join(["bar", symbol, exchange.value, interval.value])
 
-        # 从数据库读取数据
-        df: DataFrame = pandas.read_sql(
-            f"select *, interval_ from {table_name} WHERE datetime BETWEEN '{start}' AND '{end}'", self.conn)
+        engine = create_engine(f"taos://{self.user}:{self.password}@localhost:6030/{self.database}")
+        conn = engine.connect()
+        df: DataFrame = pandas.read_sql(text(
+            f"select *, interval_ from {table_name} WHERE datetime BETWEEN '{start}' AND '{end}'"), conn)
+        conn.close()
 
         # 返回BarData列表
         bars: List[BarData] = []
@@ -300,8 +304,11 @@ class TDengineDatabase(BaseDatabase):
         table_name: str = "_".join(["tick", symbol, exchange.value])
 
         # 从数据库读取数据
-        df: DataFrame = pandas.read_sql(f"select * from {table_name} WHERE datetime BETWEEN '{start}' AND '{end}'",
-                                        self.conn)
+        engine = create_engine(f"taos://{self.user}:{self.password}@localhost:6030/{self.database}")
+        conn = engine.connect()
+        df: DataFrame = pandas.read_sql(text(
+            f"select * from {table_name} WHERE datetime BETWEEN '{start}' AND '{end}'", conn)
+        conn.close()
 
         # 返回TickData列表
         ticks: List[TickData] = []
@@ -391,8 +398,11 @@ class TDengineDatabase(BaseDatabase):
     def get_bar_overview(self) -> List[BarOverview]:
         """查询K线汇总信息"""
         # 从数据库读取数据
-        df: DataFrame = pandas.read_sql(
-            "SELECT DISTINCT symbol, exchange, interval_, start_time, end_time, count_ FROM s_bar", self.conn)
+        engine = create_engine(f"taos://{self.user}:{self.password}@localhost:6030/{self.database}")
+        conn = engine.connect()
+        df: DataFrame = pandas.read_sql(text(
+            "SELECT DISTINCT symbol, exchange, interval_, start_time, end_time, count_ FROM s_bar", conn)
+        conn.close()
 
         # 返回BarOverview列表
         overviews: list[BarOverview] = []
@@ -413,8 +423,11 @@ class TDengineDatabase(BaseDatabase):
     def get_tick_overview(self) -> List[TickOverview]:
         """查询Tick汇总信息"""
         # 从数据库读取数据
-        df: DataFrame = pandas.read_sql("SELECT DISTINCT symbol, exchange, start_time, end_time, count_ FROM s_tick",
-                                        self.conn)
+        engine = create_engine(f"taos://{self.user}:{self.password}@localhost:6030/{self.database}")
+        conn = engine.connect()
+        df: DataFrame = pandas.read_sql(text(
+            "SELECT DISTINCT symbol, exchange, start_time, end_time, count_ FROM s_tick", conn)
+        conn.close()
 
         # TickOverview
         overviews: list[TickOverview] = []

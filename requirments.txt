@@ -1,3 +1,4 @@
 tqsdk
 taospy
 apscheduler
+sqlalchemy
