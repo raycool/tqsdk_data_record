@@ -8,19 +8,21 @@ import os
 import json
 from trader.setting import SETTINGS
 
-
+EXCHANGES = ['CZCE','DCE','SHFE','INE','GFEX']
 class SymbolFilter(object):
     def __init__(self, tq_name: str, tq_password: str):
         self.api = TqApi(auth=TqAuth(tq_name, tq_password))
         self.save_symbols: dict = {}
 
-    def get_symbol_class(self, type_='FUTURE'):
-        symbols = self.api.query_quotes(ins_class=type_)
-        symbols = [symbol for symbol in symbols if not symbol.startswith("CFFEX")]
+    def get_symbol_class(self, exchange, type_='FUTURE'):
+        symbols = self.api.query_quotes(ins_class=type_, exchange_id=exchange, expired=False)  # 防止郑州有些品种出错
         return symbols
 
     def filter_symbols(self):
-        symbols = self.get_symbol_class()
+        symbols = []
+        for exchange in EXCHANGES:
+            symbols_ = self.get_symbol_class(exchange)
+            symbols.extend(symbols_)
         for index in range(0, len(symbols), 50):
             quote_list = self.api.get_quote_list(symbols[index:index + 50])
             for item in quote_list:
